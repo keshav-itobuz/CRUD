@@ -1,41 +1,38 @@
 import { User } from '../model/mongodb.js';
+import { StatusCodes } from 'http-status-codes';
 
-export async function getUser(req,res) {
-    const userId = req.query.id;
-    const userData = await User.findById(userId)
-    let data;
-    if (userData) {
-        data = {
-            status: 200,
+
+export async function getUser(req, res) {
+    try {
+        const userId = req.query.id;
+        const userData = await User.findById(userId)
+        const data = {
+            status: StatusCodes.OK,
             data: userData,
             message: 'success'
         }
+        res.status(StatusCodes.OK).json(data);
     }
-    else {
-        data = {
-            status: 404,
-            data: 'undefined',
-            message: 'Error'
-        }
+    catch (err) {
+        res.status(StatusCodes.NOT_FOUND).json({ message: "Error not found" });
     }
-    res.status(200).json(data);
     res.end()
 }
 
-export async function updateUser(req,res) {
+export async function updateUser(req, res) {
     try {
         const userId = req.query.id;
         console.log(userId);
         await User.findByIdAndUpdate(userId, { name: req.body.name })
-        res.status(200).json({ message: "Succesfully Updated" });
+        res.status(StatusCodes.OK).json({ message: "Succesfully Updated" });
     }
     catch (err) {
-        res.status(404).json({ message: "Error not found" });
+        res.status(StatusCodes.NOT_FOUND).json({ message: "Error not found" });
     }
     res.end()
 }
 
-export async function addUser(req,res) {
+export async function addUser(req, res) {
     try {
         const user = new User({
             email: req.body.email,
@@ -44,22 +41,22 @@ export async function addUser(req,res) {
 
         });
         await user.save()
-        res.status(200).json({ message: "Succesfully Created" });
+        res.status(StatusCodes.OK).json({ message: "Succesfully Created" });
     }
     catch (err) {
-        res.status(404).json({ message: "Error not found" });
+        res.status(StatusCodes.NOT_FOUND).json({ message: "Error not found" });
     };
     res.end();
 }
 
-export async function deleteUser(req,res) {
+export async function deleteUser(req, res) {
     try {
         const userId = req.query.id;
         await User.findByIdAndDelete(userId);
-        res.status(200).json({ message: "Succesfully Deleted" })
+        res.status(StatusCodes.OK).json({ message: "Succesfully Deleted" })
     }
     catch (err) {
-        res.status(404).json({ message: "Error not found" });
+        res.status(StatusCodes.NOT_FOUND).json({ message: "Error not found" });
     }
     res.end();
 }
