@@ -1,16 +1,21 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-
-dotenv.config();
-const URL = process.env.URL;
-mongoose.connect(URL);
 
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  name: String,
-  email: String,
-  password: String,
-});
+  name: {
+    type: String,
+    required: true,
+  },
+  email:{
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+},{timestamps:true});
 
-export const User = mongoose.model('users', userSchema);
+const User = mongoose.model('users', userSchema);
+export default User;

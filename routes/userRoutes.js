@@ -1,10 +1,10 @@
-import { getUser , updateUser , deleteUser , addUser } from "../controllers/usersController.js";
+import { getUser, updateUser, deleteUser, addUser } from "../controllers/usersController.js";
 import { Router } from "express";
 
 const router = Router();
 
 
-router.get('/',  getUser);
+router.get('/', getUser);
 
 router.put('/', updateUser);
 
